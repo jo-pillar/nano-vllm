@@ -1,5 +1,6 @@
 import pickle
 import torch
+import time
 import torch.distributed as dist
 from multiprocessing.synchronize import Event
 from multiprocessing.shared_memory import SharedMemory
@@ -33,10 +34,13 @@ class ModelRunner:
         self.sampler = Sampler()
         self.warmup_model()
         self.allocate_kv_cache()
+        capture_time=time.time()
         if not self.enforce_eager:
             self.capture_cudagraph()
+        capture_time = capture_time=time.time()-time.time()
         torch.set_default_device("cpu")
         torch.set_default_dtype(default_dtype)
+        print(capture_time: {capture_time:.2f}s)
 
         if self.world_size > 1:
             if rank == 0:
