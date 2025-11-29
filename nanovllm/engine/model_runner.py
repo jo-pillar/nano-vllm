@@ -37,10 +37,12 @@ class ModelRunner:
         capture_time=time.time()
         if not self.enforce_eager:
             self.capture_cudagraph()
-        capture_time = capture_time=time.time()-time.time()
+        capture_time = time.time()-capture_time
+        torch.set_default_device("cpu")
         torch.set_default_device("cpu")
         torch.set_default_dtype(default_dtype)
-        print(capture_time: {capture_time:.2f}s)
+        torch.set_default_dtype(default_dtype)
+        print(f"capture_time: {capture_time:.2f}s")
 
         if self.world_size > 1:
             if rank == 0:
